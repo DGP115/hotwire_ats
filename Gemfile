@@ -69,3 +69,5 @@ end
 
 
 gem "stimulus_reflex", "= 3.5.0.pre8"
+gem 'devise', '~> 4.8', '>= 4.8.1'
+gem 'inline_svg'
