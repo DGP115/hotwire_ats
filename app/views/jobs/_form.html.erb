@@ -6,7 +6,7 @@
 
   <% if job.errors.any? %>
     <div id="error_explanation">
-      <h2><%= pluralize(job.errors.count, "error") %> prohibited this job from being saved:</h2>
+      <h2><strong><%= pluralize(job.errors.count, "error") %></strong> prohibited this job from being saved:</h2>
 
       <ul>
         <% job.errors.each do |error| %>

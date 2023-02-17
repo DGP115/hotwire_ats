@@ -27,7 +27,12 @@ class JobsController < ApplicationController
   end
 
   # GET /jobs/id/edit
-  def edit; end
+  def edit
+    html = render_to_string(partial: 'form', locals: { job: @job })
+    render operations: cable_car
+      .inner_html('#slideover-content', html: html)
+      .text_content('#slideover-header', text: 'Edit this job')
+  end
 
   # POST /jobs
   def create
@@ -49,19 +54,21 @@ class JobsController < ApplicationController
   # PATCH/PUT /jobs/id
   def update
     if @job.update(job_params)
-      redirect_to @job, notice: 'Job was successfully updated.'
+      html = render_to_string(partial: 'job', locals: { job: @job })
+      render operations: cable_car
+        .replace(dom_id(@job), html: html)
+        .dispatch_event(name: 'submit:success')
     else
-      render 'edit', status: :unprocessable_entity
+      html = render_to_string(partial: 'form', locals: { job: @job })
+      render operations: cable_car
+        .inner_html('#job-form', html: html), status: :unprocessable_entity
     end
   end
 
   # DELETE /jobs/1
   def destroy
-    if @job.destroy
-      redirect_to jobs_url, notice: 'Job was successfully destroyed.'
-    else
-      render 'edit', status: :unprocessable_entity
-    end
+    render operations: cable_car.remove(selector: dom_id(@job))
+    render 'edit', status: :unprocessable_entity unless @job.destroy
   end
 
   private
