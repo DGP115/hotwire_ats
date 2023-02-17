@@ -35,9 +35,14 @@ class JobsController < ApplicationController
     @job.account_id = current_user.account_id
 
     if @job.save
-      redirect_to @job, notice: 'Job was successfully created.'
+      html = render_to_string(partial: 'job', locals: { job: @job })
+      render operations: cable_car
+        .prepend('#jobs', html: html)
+        .dispatch_event(name: 'submit:success')
     else
-      render :new, status: :unprocessable_entity
+      html = render_to_string(partial: 'form', locals: { job: @job })
+      render operations: cable_car
+        .inner_html('#job-form', html: html), status: :unprocessable_entity
     end
   end
 
@@ -68,6 +73,6 @@ class JobsController < ApplicationController
 
   # Only allow a list of trusted parameters through.
   def job_params
-    params.require(:job).permit(:title, :status, :job_type, :location, :account_id)
+    params.require(:job).permit(:title, :status, :job_type, :location, :account_id, :description)
   end
 end

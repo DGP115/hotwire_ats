@@ -8,15 +8,15 @@
               new_job_path,
               class: "btn-primary-outline",
               data: {
-              action: "click->slideover#open",
-              remote: true
-            } %>
+                      action: "click->slideover#open",
+                      remote: true
+                    } %>
 
 </div>
 
 <div class="shadow overflow-hidden sm:rounded-md">
 
-  <div class="divide-y divide-gray-200">
+  <div class="divide-y divide-gray-200" id="jobs">
     <%= render @jobs %>
   </div>
 

@@ -4,7 +4,7 @@ import { Controller } from "stimulus"
 export default class extends Controller {
   // In Stimulus, a target lets you reference important html elements by name.
   //  We reference our targets in stimulus controller methods using 'this.slideoverTarget',
-  //  since this is teh slideover_controller
+  //  since this is the slideover_controller
   static targets = [ "slideover" ]
 
   connect() {
@@ -19,7 +19,7 @@ export default class extends Controller {
   }
 
   //The event listener that we add when open is called is the other important piece of the
-  // SlideoverController. This event listener, submit:success, is how we close the drawer
+  // SlideoverController. In this event listener, submit:success, is how we close the drawer
   // after a successful form submission.
   open() {
     this.visible = true
