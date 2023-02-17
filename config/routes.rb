@@ -7,7 +7,7 @@ Rails.application.routes.draw do
              path: '',
              controllers: {
                registrations: 'users/registrations',
-               sessions: 'users/sessions',
+               sessions: 'users/sessions'
              },
              path_names: {
                sign_in: 'login',
@@ -29,4 +29,7 @@ Rails.application.routes.draw do
 
   # pages
   get 'dashboard/show'
+
+  # Jobs
+  resources :jobs
 end
