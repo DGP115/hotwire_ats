@@ -32,4 +32,7 @@ Rails.application.routes.draw do
 
   # Jobs
   resources :jobs
+
+  # Applicants
+  resources :applicants
 end

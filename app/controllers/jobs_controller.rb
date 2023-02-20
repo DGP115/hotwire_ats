@@ -22,7 +22,7 @@ class JobsController < ApplicationController
     # a JSON payload that Mrujs handles.
     html = render_to_string(partial: 'form', locals: { job: Job.new })
     render operations: cable_car
-      .inner_html('#slideover-content', html: html)
+      .inner_html('#slideover-content', html: html) # rubocop:disable Style/HashSyntax
       .text_content('#slideover-header', text: 'Post a new job')
   end
 
@@ -30,24 +30,24 @@ class JobsController < ApplicationController
   def edit
     html = render_to_string(partial: 'form', locals: { job: @job })
     render operations: cable_car
-      .inner_html('#slideover-content', html: html)
+      .inner_html('#slideover-content', html: html) # rubocop:disable Style/HashSyntax
       .text_content('#slideover-header', text: 'Edit this job')
   end
 
   # POST /jobs
-  def create
+  def create # rubocop:disable Metrics/MethodLength
     @job = Job.new(job_params)
     @job.account_id = current_user.account_id
 
     if @job.save
       html = render_to_string(partial: 'job', locals: { job: @job })
       render operations: cable_car
-        .prepend('#jobs', html: html)
+        .prepend('#jobs', html: html) # rubocop:disable Style/HashSyntax
         .dispatch_event(name: 'submit:success')
     else
       html = render_to_string(partial: 'form', locals: { job: @job })
       render operations: cable_car
-        .inner_html('#job-form', html: html), status: :unprocessable_entity
+        .inner_html('#job-form', html: html), status: :unprocessable_entity # rubocop:disable Style/HashSyntax
     end
   end
 
@@ -56,12 +56,12 @@ class JobsController < ApplicationController
     if @job.update(job_params)
       html = render_to_string(partial: 'job', locals: { job: @job })
       render operations: cable_car
-        .replace(dom_id(@job), html: html)
+        .replace(dom_id(@job), html: html) # rubocop:disable Style/HashSyntax
         .dispatch_event(name: 'submit:success')
     else
       html = render_to_string(partial: 'form', locals: { job: @job })
       render operations: cable_car
-        .inner_html('#job-form', html: html), status: :unprocessable_entity
+        .inner_html('#job-form', html: html), status: :unprocessable_entity # rubocop:disable Style/HashSyntax
     end
   end
 
