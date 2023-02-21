@@ -7,6 +7,12 @@ import { application } from "./application"
 import AlertController from "./alert_controller"
 application.register("alert", AlertController)
 
+import ApplicationController from "./application_controller"
+application.register("application", ApplicationController)
+
+import DraggableController from "./draggable_controller"
+application.register("draggable", DraggableController)
+
 import HelloController from "./hello_controller"
 application.register("hello", HelloController)
 

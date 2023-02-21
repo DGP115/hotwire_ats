@@ -12,25 +12,32 @@
 </div>
 
 <div class="flex items-baseline justify-between">
-  <div class="flex flex-grow mt-4 space-x-6 overflow-auto">
+  <div
+    data-controller="draggable"
+    data-draggable-resource-value="Applicant"
+    data-draggable-attribute-value="stage"
+    class="flex flex-grow mt-4 space-x-6 overflow-auto"
+  >
+    <div class="flex flex-grow mt-4 space-x-6 overflow-auto">
 
-    <% [:application, :interview, :offer, :hired].each do |key| %>
+      <% [:application, :interview, :offer, :hired].each do |key| %>
 
-      <div class="flex flex-col flex-shrink-0 w-72">
+        <div class="flex flex-col flex-shrink-0 w-72">
 
-        <div class="flex items-center flex-shrink-0 h-10 px-2">
-          <span class="block text-lg font-semibold"><%= key.to_s.humanize %></span>
+          <div class="flex items-center flex-shrink-0 h-10 px-2">
+            <span class="block text-lg font-semibold"><%= key.to_s.humanize %></span>
+          </div>
+
+          <div id="applicants-<%= key %>" data-draggable-target="list" data-new-value="<%= key.to_s %>" class="h-full">
+            <% @applicants.where(stage: key).each do |applicant| %>
+              <%= render "card", applicant: applicant %>
+            <% end %>
+          </div>
+
         </div>
 
-        <div id="applicants-<%= key %>" class="h-full">
-          <% @applicants.where(stage: key).each do |applicant| %>
-            <%= render "card", applicant: applicant %>
-          <% end %>
-        </div>
-
-      </div>
-
-    <% end %>
+      <% end %>
+    </div>
 
   </div>
 </div>
