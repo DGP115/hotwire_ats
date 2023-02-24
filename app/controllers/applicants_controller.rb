@@ -2,12 +2,17 @@
 
 #  Our app's applicants controller
 class ApplicantsController < ApplicationController
+  include Filterable
   before_action :set_applicant, only: %i[show edit update destroy]
   before_action :authenticate_user!
 
   # GET /applicants
   def index
-    @applicants = Applicant.all
+    # This returns a hash with stage value as key(s) and associated
+    # account-specific applicants as values
+    @grouped_applicants = filter!(Applicant)
+                          .for_account(current_user.account_id)
+                          .group_by(&:stage)
   end
 
   # GET /applicants/id
@@ -74,5 +79,9 @@ class ApplicantsController < ApplicationController
   def applicant_params
     params.require(:applicant).permit(:first_name, :last_name, :email, :phone,
                                       :stage, :status, :job_id, :resume)
+  end
+
+  def search_params
+    params.permit(:query, :job, :sort)
   end
 end
