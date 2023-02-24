@@ -34,5 +34,9 @@ Rails.application.routes.draw do
   resources :jobs
 
   # Applicants
-  resources :applicants
+  #  Include addition of a route and controller action to handle the stage change PATCH request
+  #  that occurs when the user drag/drops applicants between hiring stages.
+  resources :applicants do
+    patch :change_stage, on: :member
+  end
 end

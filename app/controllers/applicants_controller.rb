@@ -3,7 +3,7 @@
 #  Our app's applicants controller
 class ApplicantsController < ApplicationController
   include Filterable
-  before_action :set_applicant, only: %i[show edit update destroy]
+  before_action :set_applicant, only: %i[show edit update destroy change_stage]
   before_action :authenticate_user!
 
   # GET /applicants
@@ -50,17 +50,10 @@ class ApplicantsController < ApplicationController
     end
   end
 
-  # PATCH/PUT /applicants/id
-  def update
-    respond_to do |format|
-      if @applicant.update(applicant_params)
-        format.html { redirect_to applicant_url(@applicant), notice: 'Applicant was successfully updated.' }
-        format.json { render :show, status: :ok, location: @applicant }
-      else
-        format.html { render :edit, status: :unprocessable_entity }
-        format.json { render json: @applicant.errors, status: :unprocessable_entity }
-      end
-    end
+  def change_stage
+    @applicant.update(applicant_params)
+    #  Sends header only to the browser
+    head :ok
   end
 
   # DELETE /applicants/1 or /applicants/1.json

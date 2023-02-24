@@ -7,10 +7,12 @@
       In this case the "request" comes from the filter_form partial and this response then
       renders the applicants portion of the index page according to the filter criteria
        -->
-<%= turbo_frame_tag "applicants", class: "flex flex-grow mt-4 space-x-6 overflow-auto",
-                                  data: { controller: "drag",
-                                          drag_url_value: "/applicants/:id/change_stage", drag_attribute_value: "applicant[stage]"
-                                        } do %>
+
+
+  <%= turbo_frame_tag "applicants", class: "flex flex-grow mt-4 space-x-6 overflow-auto",
+                                    data: { controller: "drag",
+                                            drag_url_value: "/applicants/:id/change_stage", drag_attribute_value: "applicant[stage]"
+                                          } do %>
 
   <% %w[application interview offer hired].each do |stage| %>
 
@@ -32,4 +34,6 @@
 
   <% end %>
 
+</div>
 <% end %>
+
