@@ -1,0 +1,38 @@
+<!-- The helper data: { turbo_frame: "applicants" } establishes the "request" portion of
+      a Turbo_frame interaction.
+      Turbo will expect a corresponding "response" (contained in a different partial) to
+      contain the  <turbo_frame id="applicants">
+
+      In this case the "request" comes from here and the response comes from the list partial
+
+      NOTE:  The turbo_action: "advance" updates teh page url to reflect the filter criteria
+              chosen (even though turbo is not updating the entire page) as this makes it easier
+              for a user to bookmank or share teh page with teh selected filter criteria intact
+       -->
+<%= form_with url: applicants_path, method: :get,
+                                    class: "flex items-baseline",
+                                    data: {
+                                            turbo_frame: "applicants",
+                                            turbo_action: "advance"
+                                          } do |form| %>
+  <div class="form-group mr-2">
+    <%= form.label :sort, class: "sr-only" %>
+    <%= form.select :sort, options_for_select([['Application Date Ascending', 'created_at-asc'], ['Application Date Descending', 'created_at-desc']], params[:sort]) %>
+  </div>
+
+  <div class="form-group mr-2">
+    <%= form.label :job, class: "sr-only" %>
+    <%= form.select :job, options_for_select(Job.where(account_id: current_user.account_id).
+                                                 order(:title).
+                                                 pluck(:title, :id),
+                                                 params[:job]),
+                          { include_blank: 'All Jobs' } %>
+  </div>
+
+  <div class="form-group mr-2">
+    <%= form.label :query, class: "sr-only" %>
+    <%= form.text_field :query, placeholder: "Search applicants", value: params[:query] %>
+  </div>
+
+  <%= form.button "Search", class: "btn-primary" %>
+<% end %>

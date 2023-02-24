@@ -13,6 +13,11 @@ class ApplicantsController < ApplicationController
     @grouped_applicants = filter!(Applicant)
                           .for_account(current_user.account_id)
                           .group_by(&:stage)
+
+    # NOTE:  See application_controller.
+    #  Normally the index action would render index.html.erb, but we have set it up
+    #  such that IFF the get request includes a turbo_frame_id, a custom_variant will
+    #  be rendered instead [index.html+turbo_frame.erb ]
   end
 
   # GET /applicants/id
