@@ -13,6 +13,9 @@ application.register("application", ApplicationController)
 import DragController from "./drag_controller"
 application.register("drag", DragController)
 
+import FormController from "./form_controller"
+application.register("form", FormController)
+
 import HelloController from "./hello_controller"
 application.register("hello", HelloController)
 

@@ -6,34 +6,33 @@
 
       In this case the "request" comes from the filter_form partial and this response then
       renders the applicants portion of the index page according to the filter criteria
+
+      The elements within data {} connect the drag_contoleer to the DOM
        -->
-
-
   <%= turbo_frame_tag "applicants", class: "flex flex-grow mt-4 space-x-6 overflow-auto",
                                     data: { controller: "drag",
                                             drag_url_value: "/applicants/:id/change_stage", drag_attribute_value: "applicant[stage]"
                                           } do %>
 
-  <% %w[application interview offer hired].each do |stage| %>
+    <% %w[application interview offer hired].each do |stage| %>
 
-    <div class="flex flex-col flex-shrink-0 w-72">
+      <div class="flex flex-col flex-shrink-0 w-72">
 
-      <div class="flex items-center flex-shrink-0 h-10 px-2">
-        <span class="block text-lg font-semibold"><%= stage.to_s.humanize %></span>
+        <div class="flex items-center flex-shrink-0 h-10 px-2">
+          <span class="block text-lg font-semibold"><%= stage.to_s.humanize %></span>
+        </div>
+
+        <!--NOTE:  The addition of drag-target to each column/stage -->
+        <div id="applicants-<%= stage %>" data-drag-target="list"
+                                          class="h-full">
+          <% @grouped_applicants[stage]&.each do |applicant| %>
+            <%= render "card", applicant: applicant %>
+          <% end %>
+        </div>
+
       </div>
 
-      <div id="applicants-<%= stage %>" data-drag-target="list"
-                                        data-new-value="<%= stage.to_s %>"
-                                        class="h-full">
-        <% @grouped_applicants[stage]&.each do |applicant| %>
-          <%= render "card", applicant: applicant %>
-        <% end %>
-      </div>
+    <% end %>
 
-    </div>
-
-  <% end %>
-
-</div>
 <% end %>
 

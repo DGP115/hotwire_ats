@@ -5,34 +5,50 @@
 
       In this case the "request" comes from here and the response comes from the list partial
 
-      NOTE:  The turbo_action: "advance" updates teh page url to reflect the filter criteria
-              chosen (even though turbo is not updating the entire page) as this makes it easier
-              for a user to bookmank or share teh page with teh selected filter criteria intact
+      NOTE:  The turbo_action: "advance" updates the page's url (in the address bar) to reflect the filter criteria chosen (even though turbo is not updating the entire page) as this makes it easier for a user to bookmank or share the page with teh selected filter criteria intact
        -->
-<%= form_with url: applicants_path, method: :get,
-                                    class: "flex items-baseline",
-                                    data: {
-                                            turbo_frame: "applicants",
-                                            turbo_action: "advance"
-                                          } do |form| %>
+<%= form_with url: applicants_path,
+              method: :get,
+              class: "flex items-baseline",
+              data: {
+                      controller: "form",
+                      form_target: "form",
+                      turbo_frame: "applicants",
+                      turbo_action: "advance"
+                    } do |form| %>
+
+  <!--Note use of helper method 'applicant_sort_options_for_select' -->
   <div class="form-group mr-2">
     <%= form.label :sort, class: "sr-only" %>
-    <%= form.select :sort, options_for_select([['Application Date Ascending', 'created_at-asc'], ['Application Date Descending', 'created_at-desc']], params[:sort]) %>
+    <%= form.select :sort,
+            options_for_select(
+                               applicant_sort_options_for_select,
+                               fetch_filter_key("applicant", current_user.id, "sort")
+                               ),
+                    {},
+                    { data: { action: "change->form#submit" } }
+                    %>
+    <!-- re: the data action above:  "On Change event, call the form controller's submit method-->
   </div>
 
+  <!--Note use of helper method 'applicant_sort_options_for_select' -->
   <div class="form-group mr-2">
     <%= form.label :job, class: "sr-only" %>
-    <%= form.select :job, options_for_select(Job.where(account_id: current_user.account_id).
-                                                 order(:title).
-                                                 pluck(:title, :id),
-                                                 params[:job]),
-                          { include_blank: 'All Jobs' } %>
+    <%= form.select :job, options_for_select(
+                                             job_options_for_select(current_user.account_id),
+                                             fetch_filter_key("applicant", current_user.id, "job")
+                                             ),
+                          { include_blank: 'All Jobs' },
+                          { data: { action: "change->form#submit" } }
+                          %>
   </div>
 
   <div class="form-group mr-2">
     <%= form.label :query, class: "sr-only" %>
-    <%= form.text_field :query, placeholder: "Search applicants", value: params[:query] %>
+    <%= form.text_field :query,
+                        placeholder: "Search applicants",
+                        value: fetch_filter_key("applicant", current_user.id, "query"),
+                        data: { action: "input->form#submit" }  %>
   </div>
 
-  <%= form.button "Search", class: "btn-primary" %>
 <% end %>

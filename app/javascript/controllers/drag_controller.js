@@ -10,7 +10,8 @@ export default class extends Controller {
   }
 
   // '[name]TargetConnected' is a built-in stimulus callback that runs each time
-  //  the target element is added to the DOM
+  //  the target element is added to the DOM.
+  //  This method loops through all 'list' targets and calls initalizeSortable to sort them
   listTargetConnected() {
     this.listTargets.forEach(this.initializeSortable.bind(this))
   }
@@ -21,13 +22,13 @@ export default class extends Controller {
   //  The 'sort: false' option limits the drag and drop to between columns, not within a column
 
   //  NOTEs:
-  //    1.  An instance of a Stimulus controller can have any number elements with the
+  //    1.  An instance of a Stimulus controller can have any number of elements with the
   //        same target identifier.  In our case we have 4 applicant hiring stages all
-  //        within a 'list' target.  But we only have to define this code once and it will
-  //        "attached itself" to all of our lists sub-types.
+  //        within a 'list' drag-target.  But we only have to define this code once and it will
+  //        "attached itself" to all of our drag-target lists.
 
   //    2.  Stimulus callbacks allow us to include code from 3rd-party libraries,
-  //        Sortablejs in this case
+  //        Sortablejs, in this case
   initializeSortable(target) {
     new Sortable(target, {
       group: 'shared',
