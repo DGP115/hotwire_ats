@@ -44,7 +44,7 @@ class Applicant < ApplicationRecord
   #  To isolate users to only those applicants within their account
   scope :for_account, ->(account_id) { where(jobs: { account_id: account_id }) }
 
-  # Recall from applicants/index.htmp.erb that 'selection' is a string comprising
+  # Recall from applicants_helper.rb that 'selection' is a string comprising
   # "sort_column-sort_order"
   def self.apply_sort(selection)
     sort_column, sort_order = selection.split('-')

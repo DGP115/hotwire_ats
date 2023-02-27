@@ -1,0 +1,13 @@
+<!-- The helper turbo_frame_tag injects <turbo_frame id= into the DOM.
+      In this case that would be <turbo_frame id="jobs">
+      Thus we are setting up this partial to be the "response" portion of a Turbo_frame interaction.
+      Turbo will expect a corresponding "request" (contained in a different partial) to
+      contain the same <turbo_frame id="jobs"
+
+      In this case the "request" comes from the filter_form partial and this response then
+      renders the jobs portion of the index page according to the filter criteria
+
+       -->
+<%= turbo_frame_tag "jobs", class: "divide-y divide-gray-200" do %>
+  <%= render jobs %>
+<% end %>

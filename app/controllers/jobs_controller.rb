@@ -2,13 +2,14 @@
 
 #  Our app's Jobs controller
 class JobsController < ApplicationController
+  include Filterable
   #  authenticate_user! is provided by Devise
   before_action :authenticate_user!
   before_action :set_job, only: %i[show edit update destroy]
 
   # GET /jobs
   def index
-    @jobs = Job.all
+    @jobs = filter!(Job).for_account(current_user.account_id)
   end
 
   # GET /jobs/id

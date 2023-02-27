@@ -14,11 +14,10 @@
 
 </div>
 
-<div class="shadow overflow-hidden sm:rounded-md">
-
-  <div class="divide-y divide-gray-200" id="jobs">
-    <%= render @jobs %>
-  </div>
-
+<div class="flex mb-6 justify-end">
+  <%= render "filter_form" %>
 </div>
 
+<div class="shadow overflow-hidden sm:rounded-md">
+  <%= render "list", jobs: @jobs %>
+</div>
