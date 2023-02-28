@@ -59,6 +59,7 @@ end
 group :development do
   # Use console on exceptions pages [https://github.com/rails/web-console]
   gem "web-console"
+  gem 'letter_opener_web', '~> 2.0'
 
   # Add speed badges [https://github.com/MiniProfiler/rack-mini-profiler]
   # gem "rack-mini-profiler"
@@ -72,3 +73,4 @@ gem "stimulus_reflex", "= 3.5.0.pre8"
 gem 'devise', branch: 'rails_7', github: 'DavidColby/devise'
 gem 'inline_svg'
 gem 'pg_search', '~> 2.3', '>= 2.3.6'
+gem 'mail', '~> 2.8', '>= 2.8.1'

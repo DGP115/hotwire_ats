@@ -21,6 +21,7 @@ class JobsController < ApplicationController
     # short-circuiting that default rendering here. Instead, we render the jobs form partial to a
     # string and then render cable_car operations. These operations are sent back to the browser as
     # a JSON payload that Mrujs handles.
+    # This "inserts" the new job form into the empty slideover that exists on the index page.
     html = render_to_string(partial: 'form', locals: { job: Job.new })
     render operations: cable_car
       .inner_html('#slideover-content', html: html) # rubocop:disable Style/HashSyntax

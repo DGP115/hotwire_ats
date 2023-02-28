@@ -1,0 +1,13 @@
+<!--  NOTEs:
+  1.  An iframe is used to display a web page within a web page.
+      The <iframe> tag defines a rectangular region within the document in which
+      the browser can display a separate document.
+
+  2.  url_for() is a helper provided by ActiveStorage.  It generates a url for a blob.
+ -->
+
+<%= turbo_frame_tag "resume" do %>
+  <div class="w-full">
+    <iframe src="<%= url_for(@resume) %>" width="100%" height="100%"></iframe>
+  </div>
+<% end %>

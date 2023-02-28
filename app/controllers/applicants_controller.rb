@@ -56,6 +56,15 @@ class ApplicantsController < ApplicationController
     head :ok
   end
 
+  def update
+    if @applicant.update(applicant_params)
+      flash[:notice] = 'Applicant was updated successfully.'
+      redirect_to applicants_path
+    else
+      render 'edit', status: :unprocessable_entity
+    end
+  end
+
   # DELETE /applicants/1 or /applicants/1.json
   def destroy
     @applicant.destroy

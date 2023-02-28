@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2023_02_17_205317) do
+ActiveRecord::Schema[7.0].define(version: 2023_02_28_204340) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
   enable_extension "plpgsql"
@@ -19,6 +19,15 @@ ActiveRecord::Schema[7.0].define(version: 2023_02_17_205317) do
     t.string "name"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+  end
+
+  create_table "action_mailbox_inbound_emails", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.integer "status", default: 0, null: false
+    t.string "message_id", null: false
+    t.string "message_checksum", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["message_id", "message_checksum"], name: "index_action_mailbox_inbound_emails_uniqueness", unique: true
   end
 
   create_table "action_text_rich_texts", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
@@ -75,6 +84,17 @@ ActiveRecord::Schema[7.0].define(version: 2023_02_17_205317) do
     t.index ["status"], name: "index_applicants_on_status"
   end
 
+  create_table "emails", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.uuid "applicant_id", null: false
+    t.uuid "user_id", null: false
+    t.text "subject"
+    t.datetime "sent_at"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["applicant_id"], name: "index_emails_on_applicant_id"
+    t.index ["user_id"], name: "index_emails_on_user_id"
+  end
+
   create_table "jobs", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
     t.string "title"
     t.string "status", default: "open", null: false
@@ -107,6 +127,8 @@ ActiveRecord::Schema[7.0].define(version: 2023_02_17_205317) do
   add_foreign_key "active_storage_attachments", "active_storage_blobs", column: "blob_id"
   add_foreign_key "active_storage_variant_records", "active_storage_blobs", column: "blob_id"
   add_foreign_key "applicants", "jobs"
+  add_foreign_key "emails", "applicants"
+  add_foreign_key "emails", "users"
   add_foreign_key "jobs", "accounts"
   add_foreign_key "users", "accounts"
 end
