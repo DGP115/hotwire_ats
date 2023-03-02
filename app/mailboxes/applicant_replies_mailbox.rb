@@ -21,6 +21,9 @@ class ApplicantRepliesMailbox < ApplicationMailbox
   before_processing :set_applicant
   before_processing :set_user
 
+  #  Method 'process' is called automnatically whenever a new email is received.
+  #  We build a new Email record and save it in the database, using the decoded method from the
+  #  mail gem to extract the body of the inbound email.
   def process
     email = build_email
     email.body = mail.parts.present? ? mail.parts[0].body.decoded : mail.decoded
@@ -30,11 +33,29 @@ class ApplicantRepliesMailbox < ApplicationMailbox
   private
 
   def set_applicant
+    #  Determine the applicant that sent the email.
+    #  This is over-simplified in that we assume the applicant emails the app using the email
+    #  address they gave when they registered with the app
     @applicant = Applicant.find_by(email: mail.from)
   end
 
   def set_user
+    #  Determine the user that should receive the applicant's email.
+    #   1.  Using methods from gem 'mail', extract the recipients from the
+    #       email.
+    #   2.  Check each recipient email address against the ALIASED_USER regex.
+    #   3.  Once a match is found, the matching email address is used to find a user
+    #       in the database by their email alias.
     recipient = mail.recipients.find { |r| ALIASED_USER.match?(r) }
     @user = User.find_by(email_alias: recipient[ALIASED_USER, 1])
+  end
+
+  def build_email
+    Email.new(
+      user_id: @user.id,
+      applicant_id: @applicant.id,
+      subject: mail.subject,
+      email_type: 'inbound'
+    )
   end
 end

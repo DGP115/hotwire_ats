@@ -23,19 +23,35 @@ class EmailsController < ApplicationController
     @email = Email.new(email_params)
     @email.applicant_id = @applicant.id
     @email.user_id = current_user.id
+    @email.email_type = 'outbound'
 
     if @email.save
       html = render_to_string(partial: 'shared/flash_messages',
                               locals: { level: :success, content: 'Email sent!' })
       render operations: cable_car
-        .inner_html('#flash-container', html: html)
+        .inner_html('#flash-container', html: html) # rubocop:disable Style/HashSyntax
         .dispatch_event(name: 'submit:success')
     else
       html = render_to_string(partial: 'form',
                               locals: { applicant: @applicant, email: @email })
       render operations: cable_car
-        .inner_html('#email-form', html: html), status: :unprocessable_entity
+        .inner_html('#email-form', html: html), status: :unprocessable_entity # rubocop:disable Style/HashSyntax
     end
+  end
+
+  def index
+    @emails = Email.where(applicant_id: params[:applicant_id])
+                   .with_rich_text_body
+                   .order(created_at: :desc)
+  end
+
+  def show
+    @email = Email.find(params[:id])
+
+    html = render_to_string(partial: 'email', locals: { email: @email })
+    render operations: cable_car
+      .inner_html('#slideover-content', html: html) # rubocop:disable Style/HashSyntax
+      .text_content('#slideover-header', text: @email.subject)
   end
 
   private

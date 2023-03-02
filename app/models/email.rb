@@ -11,6 +11,14 @@ class Email < ApplicationRecord
 
   after_create_commit :send_email
 
+  # Must distinguish between inboand and outbound email types otherise, every time a new inbound
+  # reply is processed, the application will immediately send that same email back to our servers,
+  # resulting in a broken email system
+  enum email_type: {
+    outbound: 'outbound',
+    inbound: 'inbound'
+  }
+
   def send_email
     #  'deliver_later' sends the email in the background
     ApplicantMailer.contact(email: self).deliver_later

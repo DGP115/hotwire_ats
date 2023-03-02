@@ -1,4 +1,4 @@
-<div id="<%= dom_id applicant %>">
+
   <div class="flex items-baseline justify-between mb-6 text-gray-700">
     <h2 class="mt-6 text-3xl font-extrabold">
       <%= @applicant.full_name %>
@@ -20,22 +20,35 @@
         <p>Applied for: <%= @applicant.job.title %></p>
         <p>Applied on: <%= l(@applicant.created_at.to_date, format: :long) %></p>
       </div>
+
       <div class="space-y-2">
-      <!-- Applicant actions go here -->
+        <!-- Applicant actions go here -->
       </div>
     </div>
-    <!--
-    NOTE:  Turbo Frame attributes like src and loading: "lazy" must be set when the frame is initially rendered. So, in this example, that means we need to set the src and lazy values on the version of the frame rendered by the applicant#show view versus the resume#show.
-    When a frame enters the DOM, Turbo sees the attributes, triggers a request to the specified
-    src URL, and replaces the inner HTML of the Turbo Frame with the response from the server (resumes#show)
-    -->
-    <% if @applicant.resume.attached? %>
-      <%= turbo_frame_tag "resume", src: applicant_resume_path(@applicant), loading: "lazy" do %>
-        <div class="w-full bg-gray-100 rounded flex justify-center items-center h-[1000px]">
-          Loading...
-        </div>
+
+    <div class="flex w-full">
+
+      <div class="emails-container w-1/3 bg-gray-100 border-2 border-gray-200 rounded p-4
+                  mr-2 shadow divide-y divide-gray-500 overflow-y-scroll">
+        <h3 class="text-xl font-bold">Communication History</h3>
+        <%= turbo_frame_tag "emails", src: applicant_emails_path(@applicant),
+                                      class: "max-height[1000px]" %>
+      </div>
+
+      <!--
+      NOTE:  Turbo Frame attributes like src and loading: "lazy" must be set when the frame is initially rendered. So, in this example, that means we need to set the src and lazy values on the version of the frame rendered by the applicant#show view versus the resume#show.
+      When a frame enters the DOM, Turbo sees the attributes, triggers a request to the specified
+      src URL, and replaces the inner HTML of the Turbo Frame with the response from the server (resumes#show)
+      -->
+      <% if @applicant.resume.attached? %>
+        <%= turbo_frame_tag "resume", src: applicant_resume_path(@applicant),
+                                      loading: "lazy", class: "w-2/3" do %>
+          <div class="w-full bg-gray-100 rounded flex justify-center items-center" style="height: 1000px;">
+            Loading...
+          </div>
+        <% end %>
       <% end %>
-    <% end %>
+    </div>
   </div>
 
-</div>
+
