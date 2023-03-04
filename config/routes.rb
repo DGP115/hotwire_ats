@@ -38,8 +38,8 @@ Rails.application.routes.draw do
   #  that occurs when the user drag/drops applicants between hiring stages.
   resources :applicants do
     patch :change_stage, on: :member
-    get :resume, action: :show, controller: 'resumes'
     resources :emails, only: %i[index new create show]
+    get :resume, action: :show, controller: 'resumes'
   end
 
   mount LetterOpenerWeb::Engine, at: "/letter_opener" if Rails.env.development?

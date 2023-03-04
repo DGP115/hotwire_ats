@@ -9,7 +9,7 @@ class Email < ApplicationRecord
 
   validates_presence_of :subject
 
-  after_create_commit :send_email
+  after_create_commit :send_email, if: :outbound?
 
   # Must distinguish between inboand and outbound email types otherise, every time a new inbound
   # reply is processed, the application will immediately send that same email back to our servers,
