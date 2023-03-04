@@ -10,6 +10,7 @@ class Email < ApplicationRecord
   validates_presence_of :subject
 
   after_create_commit :send_email, if: :outbound?
+  after_create_commit :broadcast_to_applicant
 
   # Must distinguish between inboand and outbound email types otherise, every time a new inbound
   # reply is processed, the application will immediately send that same email back to our servers,
@@ -38,5 +39,17 @@ class Email < ApplicationRecord
     HTML
     email.body = original_body.prepend(reply_intro)
     email
+  end
+
+  def broadcast_to_applicant
+    broadcast_prepend_later_to(
+      applicant, :emails,
+      target: 'emails-list',
+      partial: 'emails/list_item',
+      locals: {
+        emails: self,
+        applicant: applicant
+      }
+    )
   end
 end

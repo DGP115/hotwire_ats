@@ -1,3 +1,9 @@
+<!--
+  Set up a "listener" [an ActionCable subscription to the channel given by: @applicant, :emails] on this page to receive broadcasts [from a model] for new emails, in this case, from the specified applicant.
+  'turbo_stream_from' is a helper, from Turbo, for this purpose.
+-->
+<%= turbo_stream_from @applicant, :emails %>
+
 <div class="flex items-baseline justify-between mb-6 text-gray-700">
   <h2 class="mt-6 text-3xl font-extrabold">
     <%= @applicant.full_name %>
