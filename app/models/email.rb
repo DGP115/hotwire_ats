@@ -23,4 +23,20 @@ class Email < ApplicationRecord
     #  'deliver_later' sends the email in the background
     ApplicantMailer.contact(email: self).deliver_later
   end
+
+  def build_reply(email_id)
+    #  Create the email being replied to using the id provided as an argument
+    replying_to = Email.find(email_id)
+    original_body = replying_to.body.body.to_html
+
+    # Initialize the reply_email and return it
+    email = Email.new(applicant_id: replying_to.applicant_id)
+    email.subject = "re: #{replying_to.subject}"
+    reply_intro = <<-HTML
+      <br><br>--------<br>on #{replying_to.created_at.to_date} #{email.applicant.full_name} wrote:<br>
+
+    HTML
+    email.body = original_body.prepend(reply_intro)
+    email
+  end
 end
