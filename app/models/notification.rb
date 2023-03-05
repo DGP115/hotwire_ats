@@ -10,6 +10,8 @@ class Notification < ApplicationRecord
 
   belongs_to :user
 
+  after_create_commit :update_users_notification_container
+
   scope :unread, -> { where(read_at: nil) }
 
   # RECALL:  The parmas column, for notifications table, is of format jsonb
@@ -32,5 +34,22 @@ class Notification < ApplicationRecord
   #   partial named "inbound_email_notifications/inbound_email_notification" exists.
   def to_partial_path
     'notifications/notification'
+  end
+
+  #  Call for the replacement of the contents of 'notifications-container' whenever
+  #  a new notification is comitted.
+  def update_users_notification_container
+    broadcast_replace_later_to(
+      user, :notifications,
+      target: 'notifications-container',
+      partial: 'nav/notifications',
+      locals: {
+        user: user
+      }
+    )
+  end
+
+  def read!
+    update_column(:read_at, Time.current)
   end
 end
