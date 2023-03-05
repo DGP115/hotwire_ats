@@ -17,6 +17,9 @@ Rails.application.routes.draw do
     get :resume, action: :show, controller: 'resumes'
   end
 
+  #  Notifications
+  resources :notifications, only: %i[index]
+
   # Devise routes
   # Defined custom path_names, so urls and url helper methods are a bit easier to read.
   devise_for :users,

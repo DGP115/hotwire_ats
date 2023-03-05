@@ -11,6 +11,7 @@ class Email < ApplicationRecord
 
   after_create_commit :send_email, if: :outbound?
   after_create_commit :broadcast_to_applicant
+  after_create_commit :create_inbound_email_notification, if: :inbound?
 
   # Must distinguish between inboand and outbound email types otherise, every time a new inbound
   # reply is processed, the application will immediately send that same email back to our servers,
@@ -49,6 +50,19 @@ class Email < ApplicationRecord
       locals: {
         emails: self,
         applicant: applicant
+      }
+    )
+  end
+
+  #  NOTE:  If you are new to using single table inheritance in Rails,
+  #         InboundEmailNotification.create is equivalent to
+  #         Notification.create(type: 'InboundEmailNotification').
+  def create_inbound_email_notification
+    InboundEmailNotification.create(
+      user: user,
+      params: {
+        applicant: applicant,
+        email: self
       }
     )
   end

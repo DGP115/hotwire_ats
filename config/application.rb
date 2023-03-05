@@ -33,5 +33,12 @@ module HotwiredAts
 
     # Don't generate system test files.
     config.generators.system_tests = nil
+
+    # NOTE:  DGP:
+    # This is here to allow objects to be stored in jsonb column of Notifications table
+    # Without it, Rails disallows the save for security reasons.
+    # Perhaps try using json instead of jsonb in production.
+    #  See https://discuss.rubyonrails.org/t/cve-2022-32224-possible-rce-escalation-bug-with-serialized-columns-in-active-record/81017
+    config.active_record.use_yaml_unsafe_load = true
   end
 end

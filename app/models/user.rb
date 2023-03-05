@@ -11,6 +11,7 @@ class User < ApplicationRecord
   accepts_nested_attributes_for :account
 
   has_many :emails, dependent: :destroy
+  has_many :notifications, dependent: :destroy
 
   after_create_commit :generate_email_alias
 
