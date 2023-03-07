@@ -1,0 +1,5 @@
+
+Style/HashSyntax:
+  Enabled: false
+AllCops:
+  NewCops: enable

@@ -3,6 +3,7 @@
 #  Our app's applicants controller
 class ApplicantsController < ApplicationController
   include Filterable
+
   before_action :set_applicant, only: %i[show edit update destroy change_stage]
   before_action :authenticate_user!
 
@@ -41,12 +42,11 @@ class ApplicantsController < ApplicationController
     if @applicant.save
       html = render_to_string(partial: 'card', locals: { applicant: @applicant })
       render operations: cable_car
-        .prepend("#applicants-#{@applicant.stage}", html: html) # rubocop:disable Style/HashSyntax
         .dispatch_event(name: 'submit:success')
     else
       html = render_to_string(partial: 'form', locals: { applicant: @applicant })
       render operations: cable_car
-        .inner_html('#applicant-form', html: html), status: :unprocessable_entity # rubocop:disable Style/HashSyntax
+        .inner_html('#applicant-form', html: html), status: :unprocessable_entity
     end
   end
 

@@ -40,7 +40,7 @@ class Users::RegistrationsController < Devise::RegistrationsController
 
   def configure_sign_up_params
     devise_parameter_sanitizer.permit(:sign_up, keys: [
-                                        account_attributes: %i[id name]
+                                        account_attributes: [:name]
                                       ])
   end
 

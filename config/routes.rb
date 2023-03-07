@@ -20,6 +20,15 @@ Rails.application.routes.draw do
   #  Notifications
   resources :notifications, only: %i[index]
 
+  # Careers namespace
+  namespace :careers do
+    resources :accounts, only: %i[show] do
+      resources :jobs, only: %i[index show], shallow: true do
+        resources :applicants, only: %i[new create]
+      end
+    end
+  end
+
   # Devise routes
   # Defined custom path_names, so urls and url helper methods are a bit easier to read.
   devise_for :users,

@@ -16,5 +16,11 @@
 </div>
 
 <div class="flex items-baseline justify-baseline px-10 md:px-6">
-  <%= render "list", grouped_applicants: @grouped_applicants %>
+  <!--Establish a StimulusReflex "updates_for" subscription here
+      to listen for broadcasts (from the Account model in our case).
+      note that, unlike for TurboStream "listens", StimulusReflex versions
+      must wrap what is to be updated -->
+  <%= updates_for current_user.account, :applicants do %>
+    <%= render "list", grouped_applicants: @grouped_applicants %>
+  <% end %>
 </div>
