@@ -73,4 +73,3 @@ gem "stimulus_reflex", "= 3.5.0.pre8"
 gem 'devise', branch: 'rails_7', github: 'DavidColby/devise'
 gem 'inline_svg'
 gem 'pg_search', '~> 2.3', '>= 2.3.6'
-gem 'mail', '~> 2.8', '>= 2.8.1'
