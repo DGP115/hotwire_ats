@@ -24,7 +24,7 @@ class JobsController < ApplicationController
     # This "inserts" the new job form into the empty slideover that exists on the index page.
     html = render_to_string(partial: 'form', locals: { job: Job.new })
     render operations: cable_car
-      .inner_html('#slideover-content', html: html) # rubocop:disable Style/HashSyntax
+      .inner_html('#slideover-content', html: html) # rubocop:disable Style/HashSyntax,
       .text_content('#slideover-header', text: 'Post a new job')
   end
 

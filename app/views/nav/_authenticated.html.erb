@@ -12,6 +12,7 @@
 
   <%= turbo_stream_from current_user, :notifications %>
   <%= render 'nav/notifications', user: current_user %>
+  <%= render 'nav/settings_menu' %>
 
   <%= button_to "Log out", destroy_user_session_path, method: :delete,
                 data: { turbo_method: :delete },

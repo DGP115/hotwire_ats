@@ -29,6 +29,13 @@ Rails.application.routes.draw do
     end
   end
 
+  # Users [outside of Devise]
+  resources :users
+
+  # Invitations for users
+  get 'invite', to: 'invites#new', as: 'accept_invite'
+  resources :invites, only: %i[create update]
+
   # Devise routes
   # Defined custom path_names, so urls and url helper methods are a bit easier to read.
   devise_for :users,

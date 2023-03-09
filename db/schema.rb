@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2023_03_02_010352) do
+ActiveRecord::Schema[7.0].define(version: 2023_03_08_161230) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
   enable_extension "plpgsql"
@@ -109,6 +109,16 @@ ActiveRecord::Schema[7.0].define(version: 2023_03_02_010352) do
     t.index ["status"], name: "index_jobs_on_status"
   end
 
+  create_table "notifications", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.uuid "user_id", null: false
+    t.datetime "read_at"
+    t.jsonb "params"
+    t.string "type"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["user_id"], name: "index_notifications_on_user_id"
+  end
+
   create_table "users", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
     t.string "email", default: "", null: false
     t.string "encrypted_password", default: "", null: false
@@ -121,9 +131,15 @@ ActiveRecord::Schema[7.0].define(version: 2023_03_02_010352) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.string "email_alias"
+    t.string "invite_token"
+    t.datetime "invited_at"
+    t.datetime "accepted_invite_at"
+    t.uuid "invited_by_id"
     t.index ["account_id"], name: "index_users_on_account_id"
     t.index ["email"], name: "index_users_on_email", unique: true
     t.index ["email_alias"], name: "index_users_on_email_alias"
+    t.index ["invite_token"], name: "index_users_on_invite_token"
+    t.index ["invited_by_id"], name: "index_users_on_invited_by_id"
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
   end
 
@@ -133,5 +149,7 @@ ActiveRecord::Schema[7.0].define(version: 2023_03_02_010352) do
   add_foreign_key "emails", "applicants"
   add_foreign_key "emails", "users"
   add_foreign_key "jobs", "accounts"
+  add_foreign_key "notifications", "users"
   add_foreign_key "users", "accounts"
+  add_foreign_key "users", "users", column: "invited_by_id"
 end
