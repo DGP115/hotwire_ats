@@ -24,6 +24,7 @@
 
         <!--NOTE:  The addition of drag-target to each column/stage -->
         <div id="applicants-<%= stage %>" data-drag-target="list"
+                                          data-new-value="<%= stage.to_s %>"
                                           class="h-full">
           <% @grouped_applicants[stage]&.each do |applicant| %>
             <%= render "card", applicant: applicant %>

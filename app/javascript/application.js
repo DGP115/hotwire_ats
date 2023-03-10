@@ -13,3 +13,4 @@ mrujs.start({
 })
 import "trix"
 import "@rails/actiontext"
+import flatpickr from "flatpickr"

@@ -3,13 +3,19 @@
 #  Helpers for user views
 module UsersHelper
   def user_invite_info(user)
-    return "Signed up on #{user.created_at.strftime('%d-%b-%Y %I:%M%p %Z')}" unless
-      user.invited_by.present?
+    unless user.invited_by.present?
+      return "Signed up on #{user.created_at.in_time_zone('Eastern Time (US & Canada)')
+                                            .strftime('%d-%b-%Y %I:%M%P')}"
+    end
 
     if user.accepted_invite_at.present?
-      "Signed up on #{user.accepted_invite_at.strftime('%d-%b-%Y %I:%M%p %Z')}"
+      "Signed up on #{user.accepted_invite_at
+                          .in_time_zone('Eastern Time (US & Canada)')
+                          .strftime('%d-%b-%Y %I:%M%P')}"
     else
-      "Invited on #{user.invited_at.strftime('%d-%b-%Y %I:%M%p %Z')}"
+      "Invited on #{user.invited_at
+                        .in_time_zone('Eastern Time (US & Canada)')
+                        .strftime('%d-%b-%Y %I:%M%P')}"
     end
   end
 end

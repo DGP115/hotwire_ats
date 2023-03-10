@@ -3,6 +3,7 @@
 Rails.application.routes.draw do
   # pages
   get 'dashboard/show'
+  get 'charts/show', as: 'chart'
 
   # Jobs
   resources :jobs

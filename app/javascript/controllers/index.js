@@ -7,8 +7,14 @@ import { application } from "./application"
 import AlertController from "./alert_controller"
 application.register("alert", AlertController)
 
+import ApplicantsChartController from "./applicants_chart_controller"
+application.register("applicants-chart", ApplicantsChartController)
+
 import ApplicationController from "./application_controller"
 application.register("application", ApplicationController)
+
+import ChartsController from "./charts_controller"
+application.register("charts", ChartsController)
 
 import DragController from "./drag_controller"
 application.register("drag", DragController)
@@ -16,11 +22,17 @@ application.register("drag", DragController)
 import DropdownController from "./dropdown_controller"
 application.register("dropdown", DropdownController)
 
+import FlatpickrController from "./flatpickr_controller"
+application.register("flatpickr", FlatpickrController)
+
 import FormController from "./form_controller"
 application.register("form", FormController)
 
 import HelloController from "./hello_controller"
 application.register("hello", HelloController)
+
+import HiringStagesController from "./hiring_stages_controller"
+application.register("hiring-stages", HiringStagesController)
 
 import NotificationsController from "./notifications_controller"
 application.register("notifications", NotificationsController)

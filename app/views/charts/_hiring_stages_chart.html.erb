@@ -1,0 +1,29 @@
+<div
+  data-controller="hiring-stages"
+  data-hiring-stages-labels-value="<%= labels %>"
+  data-hiring-stages-series-value="<%= series %>"
+  id="stage-chart-container"
+  data-turbo-cache="false"
+>
+  <div class="flex justify-between">
+    <h3 class="text-xl font-bold text-blue-700">Applicants by Hiring Stage</h3>
+    <!--Note:  This form has no action.  We actually don't ever submit this form.
+               Instead, the select tag/dropdown has a data: {action:} to invoke a Stimulus method
+               whenever its value changes. -->
+    <form>
+      <%= select_tag "job_id",
+        options_for_select(
+          Job.for_account(current_user.account).order(:title).pluck(:title, :id)
+          ),
+          include_blank: "All Jobs",
+          data: {
+            action: "change->hiring-stages#update"
+          } %>
+    </form>
+  </div>
+
+  <div data-hiring-stages-target="chart">
+    <!-- This is the div in which the stimulus controller places the chart -->
+  </div>
+
+</div>
