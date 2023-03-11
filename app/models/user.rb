@@ -17,6 +17,8 @@ class User < ApplicationRecord
   has_many :emails, dependent: :destroy
   has_many :notifications, dependent: :destroy
 
+  has_many :comments, dependent: :destroy
+
   after_create_commit :generate_email_alias
 
   def generate_email_alias

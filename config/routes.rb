@@ -5,13 +5,18 @@ Rails.application.routes.draw do
   get 'dashboard/show'
   get 'charts/show', as: 'chart'
 
+  # Comments
+  concern :commentable do
+    resources :comments, only: %i[index create]
+  end
+
   # Jobs
   resources :jobs
 
   # Applicants
   #  Include addition of a route and controller action to handle the stage change PATCH request
   #  that occurs when the user drag/drops applicants between hiring stages.
-  resources :applicants do
+  resources :applicants, concerns: :commentable do
     patch :change_stage, on: :member
     resources :emails, only: %i[index new create show]
     resources :email_replies, only: %i[new]

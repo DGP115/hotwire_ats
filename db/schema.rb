@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2023_03_08_161230) do
+ActiveRecord::Schema[7.0].define(version: 2023_03_11_183311) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
   enable_extension "plpgsql"
@@ -78,10 +78,21 @@ ActiveRecord::Schema[7.0].define(version: 2023_03_08_161230) do
     t.uuid "job_id", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.integer "commentable_count"
     t.index ["email"], name: "index_applicants_on_email"
     t.index ["job_id"], name: "index_applicants_on_job_id"
     t.index ["stage"], name: "index_applicants_on_stage"
     t.index ["status"], name: "index_applicants_on_status"
+  end
+
+  create_table "comments", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.uuid "user_id", null: false
+    t.string "commentable_type", null: false
+    t.uuid "commentable_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["commentable_type", "commentable_id"], name: "index_comments_on_commentable"
+    t.index ["user_id"], name: "index_comments_on_user_id"
   end
 
   create_table "emails", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
@@ -146,6 +157,7 @@ ActiveRecord::Schema[7.0].define(version: 2023_03_08_161230) do
   add_foreign_key "active_storage_attachments", "active_storage_blobs", column: "blob_id"
   add_foreign_key "active_storage_variant_records", "active_storage_blobs", column: "blob_id"
   add_foreign_key "applicants", "jobs"
+  add_foreign_key "comments", "users"
   add_foreign_key "emails", "applicants"
   add_foreign_key "emails", "users"
   add_foreign_key "jobs", "accounts"
