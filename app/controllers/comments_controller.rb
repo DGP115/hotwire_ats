@@ -7,7 +7,7 @@ class CommentsController < ApplicationController
   def index
     comments = @commentable.comments
                            .includes(:user)
-                           .with_rich_text_comment_body
+                           .with_rich_text_comment
                            .order(created_at: :desc)
     html = render_to_string(partial: 'comments',
                             locals: { comments: comments, commentable: @commentable })
@@ -38,7 +38,7 @@ class CommentsController < ApplicationController
   private
 
   def comment_params
-    params.require(:comment).permit(:comment_body)
+    params.require(:comment).permit(:comment)
   end
 
   def set_commentable

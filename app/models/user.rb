@@ -2,6 +2,7 @@
 
 # App user model taken from devise
 class User < ApplicationRecord
+  include ActionText::Attachable
   # Include default devise modules. Others available are:
   # :confirmable, :lockable, :timeoutable, :trackable and :omniauthable
   devise :database_authenticatable, :registerable,
@@ -41,5 +42,9 @@ class User < ApplicationRecord
       target: "user_#{id}",
       partial: 'users/user'
     )
+  end
+
+  def to_attachable_partial_path
+    'users/mention_attachment'
   end
 end

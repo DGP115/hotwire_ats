@@ -34,6 +34,9 @@ application.register("hello", HelloController)
 import HiringStagesController from "./hiring_stages_controller"
 application.register("hiring-stages", HiringStagesController)
 
+import MentionsController from "./mentions_controller"
+application.register("mentions", MentionsController)
+
 import NotificationsController from "./notifications_controller"
 application.register("notifications", NotificationsController)
 
