@@ -2,7 +2,7 @@
   Hi <%= @user.first_name %>,
 </p>
 <p>
-  You have been invited to join Hotwired_ATS by <%= @inviting_user.full_name %>.
+  You have been invited to join Hotwired_ATS by <%= @inviting_user.name %>.
   You can activate your account here: <%= link_to 'Activiate Account',
                                                   accept_invite_url(token: @user.invite_token)  %>
 </p>

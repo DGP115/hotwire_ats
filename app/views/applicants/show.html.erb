@@ -6,7 +6,7 @@
 
 <div class="flex items-baseline justify-between mb-6 text-gray-700">
   <h2 class="mt-6 text-3xl font-extrabold">
-    <%= @applicant.full_name %>
+    <%= @applicant.name %>
   </h2>
   <%= link_to "Send email", new_applicant_email_path(@applicant),
                             class: "btn-primary-outline",

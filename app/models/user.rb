@@ -27,7 +27,7 @@ class User < ApplicationRecord
     update_column(:email_alias, email_alias)
   end
 
-  def full_name
+  def name
     [first_name, last_name].join(' ').presence || '(Not set)'
   end
 

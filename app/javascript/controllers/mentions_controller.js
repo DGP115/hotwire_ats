@@ -7,6 +7,11 @@ export default class extends ApplicationController {
     userList: Array
   }
 
+  /*
+    1.  Setup the controller,
+    2.  Initialize a new Tribute instance and
+    3.  Call reflex (server-side) with this.stimulate:
+  */
   connect() {
     super.connect()
     this.editor = this.element.editor
@@ -14,11 +19,15 @@ export default class extends ApplicationController {
     this.stimulate("Mentions#user_list")
   }
 
+  /*
+    Initialize a new Tribute instance and attach that instance to the controller’s DOM element.
+    The most important option passed in to Tribute is the empty 'values' array. We populate that array with this.stimulate("Mentions#user_list") in the connect lifecycle method and with userListValueChanged.  That data comes from the Reflex
+  */
   initializeTribute() {
     this.tribute = new Tribute({
       allowSpaces: true,
-      lookup: 'name',
-      values: [],
+      lookup: 'name',     // The column to search against in the object
+      values: [],         // The array that is searched [contains hashes {sgif, user.name}]
       noMatchTemplate: function () { return 'No matches!'; },
     })
     this.tribute.attach(this.element)
@@ -31,12 +40,21 @@ export default class extends ApplicationController {
     this.tribute.detach(this.element)
   }
 
+  /*
+    userListValueChanged takes advantage of built-in Stimulus value change callbacks.
+    Recall:  At the top of the controller, we defined a userList value, which expects to be an
+             array.
+             When the userList value changes (which the server-side Mentions#user_list reflex will handle), Stimulus runs the userListValueChanged callback which calls Tribute.append to populate the list users that can be mentioned in a comment.
+  */
   userListValueChanged() {
     if (this.userListValue.length > 0 && this.tribute !== undefined) {
       this.tribute.append(0, this.userListValue)
     }
   }
 
+  /*
+    'replaced' and '_pasteHtml' handle inserting mentioned users into the Trix editor cleanly, creating a Trix attachment and embedded that attachment inline with the rest of the text in the comment.
+  */
   replaced(e) {
     let mention = e.detail.item.original
     let attachment = new Trix.Attachment({

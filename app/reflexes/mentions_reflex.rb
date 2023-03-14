@@ -15,12 +15,12 @@ class MentionsReflex < ApplicationReflex
             .account
             .users
             .where.not(id: current_user.id)
-            .map { |user| { sgid: user.attachable_sgid, name: user.full_name } }
+            .map { |user| { sgid: user.attachable_sgid, name: user.name } }
             .to_json
 
     cable_ready.set_dataset_property(
       name: 'mentionsUserListValue',
-      selector: '#comment_comment',
+      selector: '#comment_comment',  # I think this is the 'id="comment"' in partial comment
       value: users
     )
     morph :nothing

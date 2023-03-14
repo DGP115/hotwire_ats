@@ -35,7 +35,7 @@ class Email < ApplicationRecord
     email = Email.new(applicant_id: replying_to.applicant_id)
     email.subject = "re: #{replying_to.subject}"
     reply_intro = <<-HTML
-      <br><br>--------<br>on #{replying_to.created_at.to_date} #{email.applicant.full_name} wrote:<br>
+      <br><br>--------<br>on #{replying_to.created_at.to_date} #{email.applicant.name} wrote:<br>
 
     HTML
     email.body = original_body.prepend(reply_intro)

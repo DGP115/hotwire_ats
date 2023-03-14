@@ -13,7 +13,7 @@ class CommentsController < ApplicationController
                             locals: { comments: comments, commentable: @commentable })
     render operations: cable_car
       .inner_html('#slideover-content', html: html)
-      .text_content('#slideover-header', text: "Comments on #{@commentable.full_name}")
+      .text_content('#slideover-header', text: "Comments on #{@commentable.name}")
   end
 
   def create
@@ -29,7 +29,8 @@ class CommentsController < ApplicationController
         .prepend('#comments', html: html)
         .replace('#comment-form', html: form_html)
     else
-      html = render_to_string(partial: 'form', locals: { comment: @comment })
+      html = render_to_string(partial: 'form',
+                              locals: { comment: @comment, commentable: @commentable })
       render operations: cable_car
         .inner_html('#comment-form', html: html), status: :unprocessable_entity
     end

@@ -33,7 +33,7 @@ class InvitesController < ApplicationController
     flash_html = render_to_string(
       partial: 'shared/flash',
       locals: { level: :success,
-                content: "Resent invitation to #{@user.full_name}" }
+                content: "Resent invitation to #{@user.name}" }
     )
     render operations: cable_car
       .inner_html('#flash-container', html: flash_html)

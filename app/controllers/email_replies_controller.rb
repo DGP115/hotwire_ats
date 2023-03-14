@@ -12,7 +12,7 @@ class EmailRepliesController < ApplicationController
                             locals: { email: @email, applicant: @applicant })
     render operations: cable_car
       .inner_html('#slideover-content', html: html)
-      .text_content('#slideover-header', text: "Email #{@applicant.full_name}")
+      .text_content('#slideover-header', text: "Email #{@applicant.name}")
   end
 
   private

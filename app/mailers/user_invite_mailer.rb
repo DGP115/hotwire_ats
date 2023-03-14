@@ -13,7 +13,7 @@ class UserInviteMailer < ApplicationMailer
 
     mail(
       to: @user.email,
-      subject: "#{@user.invited_by.full_name} invites you to join Hotwired_ATS"
+      subject: "#{@user.invited_by.name} invites you to join Hotwired_ATS"
     )
   end
 end

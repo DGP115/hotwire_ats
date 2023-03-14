@@ -9,7 +9,7 @@
 <%= turbo_frame_tag "resume" do %>
 
   <div class="w-full">
-    <%= link_to "#{@applicant.full_name} resume", url_for(@resume),
+    <%= link_to "#{@applicant.name} resume", url_for(@resume),
                 target: "_blank",
                 class: "rounded px-2 py-1 font-semibold text-blue-700 hover:text-gray-900 hover:bg-gray-200" %>
     <iframe src="<%= url_for(@resume) %>" width="100%" height="100%"></iframe>

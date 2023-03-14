@@ -16,7 +16,7 @@ class EmailsController < ApplicationController
     html = render_to_string(partial: 'form', locals: { email: @email, applicant: @applicant })
     render operations: cable_car
       .inner_html('#slideover-content', html: html) # rubocop:disable Style/HashSyntax
-      .text_content('#slideover-header', text: "Email #{@applicant.full_name}")
+      .text_content('#slideover-header', text: "Email #{@applicant.name}")
   end
 
   def create
