@@ -40,5 +40,7 @@ module HotwiredAts
     # Perhaps try using json instead of jsonb in production.
     #  See https://discuss.rubyonrails.org/t/cve-2022-32224-possible-rce-escalation-bug-with-serialized-columns-in-active-record/81017
     config.active_record.use_yaml_unsafe_load = true
+
+    config.active_job.queue_adapter = :sidekiq
   end
 end

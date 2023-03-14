@@ -14,7 +14,7 @@ class Notification < ApplicationRecord
 
   scope :unread, -> { where(read_at: nil) }
 
-  # RECALL:  The parmas column, for notifications table, is of format jsonb
+  # RECALL:  The params column, for notifications table, is of format jsonb
   #          That is so it can store, in binary form, the applicant and email info
   #          we want to include in a notifiction.
   # The serialize command translates the binary format into run-time-usable format
